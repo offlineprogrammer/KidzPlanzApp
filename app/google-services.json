@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "77442748465",
+    "firebase_url": "https://kidzplanz-eb6ee.firebaseio.com",
+    "project_id": "kidzplanz-eb6ee",
+    "storage_bucket": "kidzplanz-eb6ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77442748465:android:cc16935a78b28467648510",
+        "android_client_info": {
+          "package_name": "com.offlineprogrammer.kidzplanz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77442748465-ac9r7abidr69s2i708uag4496ikjg5m5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.offlineprogrammer.kidzplanz",
+            "certificate_hash": "49b09f5dcefe9bdc211315ed27e921c6e3896d9c"
+          }
+        },
+        {
+          "client_id": "77442748465-r6asu4v4r1iu9mouv9s4p0eegfaeokba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgeieSOMlrNsR4ul3TkSkwgHoytZr_vEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77442748465-r6asu4v4r1iu9mouv9s4p0eegfaeokba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
