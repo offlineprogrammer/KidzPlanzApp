@@ -25,8 +25,8 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
     </style>
 
-   <!-- <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+ <style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_launcher</item>
-    </style>-->
+    </style>
 
 </resources>
