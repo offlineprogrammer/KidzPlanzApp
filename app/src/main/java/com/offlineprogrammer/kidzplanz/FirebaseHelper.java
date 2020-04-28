@@ -49,6 +49,7 @@ public class FirebaseHelper {
 
         return Observable.create((ObservableEmitter<User> emitter) -> {
 
+            m_User = new User(deviceToken);
             m_db.collection("users")
                     .whereEqualTo("deviceToken", deviceToken)
                     .get()
@@ -58,13 +59,14 @@ public class FirebaseHelper {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     if (document.exists()) {
-
-                                    } else {
-
+                                        m_User=document.toObject(User.class);
                                     }
+
                                 }
+                                emitter.onNext(m_User);
 
                             } else {
+                                emitter.onError(task.getException());
                                 Log.d("Got Date", "Error getting documents: ", task.getException());
                             }
                         }
