@@ -14,8 +14,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.offlineprogrammer.kidzplanz.kid.Kid;
 import com.offlineprogrammer.kidzplanz.user.User;
 
 import java.util.ArrayList;
@@ -105,6 +107,7 @@ public class FirebaseHelper {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w("SavingData", "Error adding document", e);
+                            emitter.onError(e);
                         }
                     });
 
@@ -112,4 +115,29 @@ public class FirebaseHelper {
     }
 
 
+    public Observable<Kid> saveKid(Kid newKid) {
+        return Observable.create((ObservableEmitter<Kid> emitter) -> {
+            DocumentReference newKidRef = m_db.collection("users").document(m_User.getFirebaseId()).collection("kidz").document();
+            newKid.setFirestoreId(newKidRef.getId());
+            newKid.setUserFirestoreId(m_User.getFirebaseId());
+            Map<String, Object> kidValues = newKid.toMap();
+            newKidRef.set(kidValues, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("Add Kid", "DocumentSnapshot successfully written!");
+                            emitter.onNext(newKid);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Add Kid", "Error writing document", e);
+                            emitter.onError(e);
+                        }
+                    });
+
+        });
+
+    }
 }

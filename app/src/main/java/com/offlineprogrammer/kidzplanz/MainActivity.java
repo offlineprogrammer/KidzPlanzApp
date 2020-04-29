@@ -100,11 +100,8 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
                             monsterImageResourceName,
                             currentTime);
                     setupProgressBar();
-                   // newKid = saveKid(newKid);
-                    Log.i(TAG, "onClick UserFireStore : " + newKid.getUserFirestoreId());
-                    Log.i(TAG, "onClick KidFireStore : " + newKid.getFirestoreId());
-                    mAdapter.add(newKid, 0);
-                    recyclerView.scrollToPosition(0);
+                    saveKid(newKid);
+
                   //  mFirebaseAnalytics.logEvent("kid_created", null);
                     builder.dismiss();
                 }
@@ -131,6 +128,52 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
         builder.setView(dialogView);
         builder.show();
         builder.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    private void saveKid(Kid newKid) {
+
+        firebaseHelper.saveKid(newKid).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Kid>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Kid kid) {
+                        Log.d(TAG, "onNext: " + kid.getFirestoreId());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecylerView(kid);
+                            }
+                        });
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
+
+    }
+
+    private void updateRecylerView(Kid kid) {
+        Log.i(TAG, "onClick UserFireStore : " + kid.getUserFirestoreId());
+        Log.i(TAG, "onClick KidFireStore : " + kid.getFirestoreId());
+        mAdapter.add(kid, 0);
+        recyclerView.scrollToPosition(0);
     }
 
     private void setupProgressBar() {
