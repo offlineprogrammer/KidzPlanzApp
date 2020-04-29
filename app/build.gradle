@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
     implementation 'de.aaronoe:rxfirestorekt:0.1.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
 }
