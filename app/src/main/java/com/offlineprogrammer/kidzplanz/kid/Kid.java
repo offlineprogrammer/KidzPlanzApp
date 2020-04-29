@@ -26,6 +26,10 @@ public class Kid implements Parcelable {
         this.createdDate = createdDate;
     }
 
+    public Kid() {
+
+    }
+
 
     protected Kid(Parcel in) {
         kidName = in.readString();

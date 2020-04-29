@@ -176,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
         recyclerView.scrollToPosition(0);
     }
 
+    private void updateRecylerView(ArrayList<Kid> kidz) {
+        mAdapter.updateData(kidz);
+        recyclerView.scrollToPosition(0);
+    }
+
     private void setupProgressBar() {
     }
 
@@ -265,8 +270,45 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
 
     }
 
-    private void getKidzData(String firebaseId) {
+    private void getKidzData(String userFireStoreId) {
+        firebaseHelper.getKidz(userFireStoreId).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<ArrayList<Kid>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Kid> kidz) {
+                        Log.d(TAG, "onNext:  " + kidz.size());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecylerView(kidz);
+                            }
+                        });
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
+
     }
+
+
 
     private void saveUser() {
         firebaseHelper.saveUser().observeOn(Schedulers.io())

@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -136,6 +137,36 @@ public class FirebaseHelper {
                             emitter.onError(e);
                         }
                     });
+
+        });
+
+    }
+
+    public Observable<ArrayList<Kid>> getKidz(String userFireStoreId) {
+         ArrayList<Kid> kidzList = new ArrayList<>();
+        return Observable.create((ObservableEmitter<ArrayList<Kid>> emitter) -> {
+
+            m_db.collection("users").document(userFireStoreId).collection("kidz")
+                    .orderBy("createdDate", Query.Direction.ASCENDING)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (document.exists()) {
+                                        Log.d("Got Data", document.getId() + " => " + document.getData());
+                                        Kid myKid = document.toObject(Kid.class);
+                                        kidzList.add(myKid);
+                                    }
+                                }
+                                emitter.onNext(kidzList);
+                            } else {
+                                Log.d("Got Date", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
 
         });
 

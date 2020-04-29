@@ -44,6 +44,13 @@ public class KidAdapter extends RecyclerView.Adapter {
         return models;
     }
 
+    public void updateData(ArrayList<Kid> viewModels){
+        models.clear();
+        models.addAll(viewModels);
+        notifyDataSetChanged();
+
+    }
+
     public void delete(int position) {
         models.remove(position);
         notifyItemRemoved(position);
