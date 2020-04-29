@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onNext(User user) {
                         Log.d(TAG, "onNext: " + user.getFirebaseId());
                         m_User = user;
+                        if (m_User.getFirebaseId()==null) {
+                            saveUser();
+                        }
 
                     }
 
@@ -89,6 +92,37 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void saveUser() {
+        firebaseHelper.saveUser().observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<User>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        Log.d(TAG, "onNext: " + user.getFirebaseId());
+                        m_User = user;
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
     }
 
 

@@ -5,8 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -16,6 +19,8 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.offlineprogrammer.kidzplanz.user.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -23,10 +28,12 @@ import io.reactivex.ObservableEmitter;
 public class FirebaseHelper {
     private User m_User;
     FirebaseFirestore m_db;
+    FirebaseAuth firebaseAuth;
     private static final String TAG = "FirebaseHelper";
 
     public FirebaseHelper (){
         m_db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     Observable<String> getDeviceToken() {
@@ -46,9 +53,7 @@ public class FirebaseHelper {
     }
 
      Observable<User> getUserData(String deviceToken) {
-
         return Observable.create((ObservableEmitter<User> emitter) -> {
-
             m_User = new User(deviceToken);
             m_db.collection("users")
                     .whereEqualTo("deviceToken", deviceToken)
@@ -61,18 +66,49 @@ public class FirebaseHelper {
                                     if (document.exists()) {
                                         m_User=document.toObject(User.class);
                                     }
-
                                 }
                                 emitter.onNext(m_User);
-
                             } else {
                                 emitter.onError(task.getException());
                                 Log.d("Got Date", "Error getting documents: ", task.getException());
                             }
                         }
                     });
+        });
+    }
+
+    Observable<User> saveUser() {
+        return Observable.create((ObservableEmitter<User> emitter) -> {
+            Map<String, Object> user = new HashMap<>();
+            user.put("deviceToken", m_User.getDeviceToken());
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+            if (currentUser != null) {
+                user.put("userId", currentUser.getEmail());
+
+            } else {
+
+                user.put("userId", "guest");
+            }
+            m_db.collection("users")
+                    .add(user)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            m_User.setFirebaseId(documentReference.getId());
+                            emitter.onNext(m_User);
+                            Log.d("SavingData", "DocumentSnapshot added with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("SavingData", "Error adding document", e);
+                        }
+                    });
 
         });
-
     }
+
+
 }
