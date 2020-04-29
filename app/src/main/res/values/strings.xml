@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">KidzPlanz</string>
+    <string name="kid_error_name">Please enter a name (min 2 chars)</string>
+    <string name="kpz_hint_kidname">Please enter a name (min 2 chars)</string>
+    <string name="kidname_button_save">Save</string>
+    <string name="kidname_button_cancel">Cancel</string>
 </resources>
