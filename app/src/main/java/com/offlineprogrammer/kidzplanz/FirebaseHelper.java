@@ -65,6 +65,7 @@ public class FirebaseHelper {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     if (document.exists()) {
                                         m_User=document.toObject(User.class);
+                                        m_User.setFirebaseId(document.getId());
                                     }
                                 }
                                 emitter.onNext(m_User);

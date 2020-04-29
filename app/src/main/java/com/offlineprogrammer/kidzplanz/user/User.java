@@ -12,6 +12,10 @@ public class User {
         this.deviceToken = deviceToken;
     }
 
+    public User() {
+
+    }
+
 
     public String getDeviceToken() {
         return deviceToken;
