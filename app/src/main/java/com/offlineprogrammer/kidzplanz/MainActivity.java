@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,11 +47,13 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
     private RecyclerView recyclerView;
     private KidAdapter mAdapter;
     private ArrayList<Kid> kidzList = new ArrayList<>();
+    ProgressDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupProgressBar();
 
         firebaseHelper = new FirebaseHelper();
         setupRecyclerView();
@@ -65,6 +70,52 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
                 showAddKidDialog(MainActivity.this);
             }
         });
+    }
+
+    private void setupProgressBar() {
+        dismissProgressBar();
+        progressBar = new ProgressDialog(this);
+        progressBar.setMessage("Loading data ...");
+        progressBar.show();
+    }
+
+    private void dismissProgressBar() {
+        dismissWithCheck(progressBar);
+    }
+
+    public void dismissWithCheck(ProgressDialog dialog) {
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+
+                //get the Context object that was used to great the dialog
+                Context context = ((ContextWrapper) dialog.getContext()).getBaseContext();
+
+                // if the Context used here was an activity AND it hasn't been finished or destroyed
+                // then dismiss it
+                if (context instanceof Activity) {
+
+                    // Api >=17
+                    if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        dismissWithTryCatch(dialog);
+                    }
+                } else
+                    // if the Context used wasn't an Activity, then dismiss it too
+                    dismissWithTryCatch(dialog);
+            }
+            dialog = null;
+        }
+    }
+
+    public void dismissWithTryCatch(ProgressDialog dialog) {
+        try {
+            dialog.dismiss();
+        } catch (final IllegalArgumentException e) {
+            // Do nothing.
+        } catch (final Exception e) {
+            // Do nothing.
+        } finally {
+            dialog = null;
+        }
     }
 
     private int pickMonster(){
@@ -174,15 +225,16 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
         Log.i(TAG, "onClick KidFireStore : " + kid.getFirestoreId());
         mAdapter.add(kid, 0);
         recyclerView.scrollToPosition(0);
+        dismissProgressBar();
     }
 
     private void updateRecylerView(ArrayList<Kid> kidz) {
         mAdapter.updateData(kidz);
         recyclerView.scrollToPosition(0);
+        dismissProgressBar();
     }
 
-    private void setupProgressBar() {
-    }
+
 
     private boolean isKidNameValid(String kidName) {
         return kidName != null && kidName.length() >= 2;
@@ -325,6 +377,12 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
                     public void onNext(User user) {
                         Log.d(TAG, "onNext: " + user.getFirebaseId());
                         m_User = user;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismissProgressBar();
+                            }
+                        });
 
 
                     }
@@ -344,6 +402,7 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
 
     @Override
     protected void onDestroy() {
+        dismissWithCheck(progressBar);
         super.onDestroy();
         disposable.dispose();
     }
@@ -352,4 +411,7 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
     public void onKidClick(int position) {
 
     }
+
+
+
 }

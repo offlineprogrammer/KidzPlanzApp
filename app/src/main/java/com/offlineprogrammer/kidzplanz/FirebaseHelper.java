@@ -147,7 +147,7 @@ public class FirebaseHelper {
         return Observable.create((ObservableEmitter<ArrayList<Kid>> emitter) -> {
 
             m_db.collection("users").document(userFireStoreId).collection("kidz")
-                    .orderBy("createdDate", Query.Direction.ASCENDING)
+                    .orderBy("createdDate", Query.Direction.DESCENDING)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
