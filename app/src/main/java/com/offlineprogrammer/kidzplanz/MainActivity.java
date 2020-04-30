@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
@@ -409,6 +410,13 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
 
     @Override
     public void onKidClick(int position) {
+        kidzList = mAdapter.getAllItems();
+        Log.i(TAG, "Clicked " + position);
+        Intent intent = new Intent(this, KidActivity.class);
+        Log.i(TAG, "onKidClick: " + kidzList.get(position).toString());
+        intent.putExtra("selected_kid",kidzList.get(position));
+        startActivity(intent);
+
 
     }
 
