@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KidzTokenz.Autumn">
-        <activity android:name=".KidActivity"></activity>
+        <activity
+            android:name=".KidActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.Splash"></activity>

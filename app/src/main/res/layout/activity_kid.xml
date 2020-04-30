@@ -7,21 +7,17 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context=".KidActivity">
 
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     android:id="@+id/kidCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@android:color/white"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="8dp"
+    card_view:cardElevation="2dp"
     card_view:cardPreventCornerOverlap="true"
-    card_view:cardUseCompatPadding="true"
-    card_view:contentPadding="10dp"
-    card_view:contentPaddingBottom="0dp"
-    tools:context=".KidActivity"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    card_view:contentPadding="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -59,13 +55,14 @@
 
 
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:id="@+id/kidLinearLayout"
         android:layout_below="@+id/kidCard"
         android:background="?attr/colorPrimaryDark"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
