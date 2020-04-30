@@ -2,7 +2,11 @@ package com.offlineprogrammer.kidzplanz;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,17 +22,28 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.offlineprogrammer.kidzplanz.kid.Kid;
 import com.offlineprogrammer.kidzplanz.plan.KidPlan;
+import com.offlineprogrammer.kidzplanz.plan.OnPlanListener;
+import com.offlineprogrammer.kidzplanz.plan.PlanAdapter;
+import com.offlineprogrammer.kidzplanz.plan.PlanGridItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class KidActivity extends AppCompatActivity {
+import io.reactivex.disposables.Disposable;
+
+public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
     private static final String TAG = "KidActivity";
     ImageView kidImageView;
     TextView kidNameTextView;
     Kid selectedKid;
+    FirebaseHelper firebaseHelper;
+    private Disposable disposable;
+    private RecyclerView recyclerView;
+    private PlanAdapter mAdapter;
+    private ArrayList<KidPlan> planzList = new ArrayList<>();
+    ProgressDialog progressBar;
 
 
     @Override
@@ -49,6 +64,22 @@ public class KidActivity extends AppCompatActivity {
         }
 
         configActionButton();
+        firebaseHelper = new FirebaseHelper();
+        setupRecyclerView();
+    }
+
+    private void setupRecyclerView() {
+        mAdapter = new PlanAdapter(planzList,this);
+        recyclerView = findViewById(R.id.planz_recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        int largePadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing);
+        int smallPadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing_small);
+        recyclerView.addItemDecoration(new PlanGridItemDecoration(largePadding, smallPadding));
+
     }
 
     private void configActionButton() {
@@ -107,5 +138,10 @@ public class KidActivity extends AppCompatActivity {
 
     private boolean isTaskNameValid(String taskName) {
         return true;
+    }
+
+    @Override
+    public void onPlanClick(int position) {
+
     }
 }

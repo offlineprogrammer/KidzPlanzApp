@@ -79,6 +79,23 @@
             android:textStyle="italic|bold"/>
     </LinearLayout>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_below="@+id/kidLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/taskGridBackgroundColor"
+        android:paddingStart="@dimen/kpz_plan_grid_spacing"
+        android:paddingEnd="@dimen/kpz_plan_grid_spacing">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/planz_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.core.widget.NestedScrollView>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_plan"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
