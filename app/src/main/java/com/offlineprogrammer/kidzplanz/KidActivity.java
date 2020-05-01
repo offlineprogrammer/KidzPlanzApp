@@ -114,7 +114,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
                     planNameText.setError(null);
                     Date currentTime = Calendar.getInstance().getTime();
                     KidPlan newPlan = new KidPlan(planName,
-                            "bekind",
+                            "neutral",
                             currentTime);
                     setupProgressBar();
                     saveKidPlan(newPlan);
