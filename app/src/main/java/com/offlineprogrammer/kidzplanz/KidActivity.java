@@ -58,6 +58,9 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
         kidImageView = findViewById(R.id.kidMonsterImage);
         kidNameTextView = findViewById(R.id.kidnameTextView);
+        configActionButton();
+        firebaseHelper = new FirebaseHelper();
+        setupRecyclerView();
 
         if (getIntent().hasExtra("selected_kid")) {
             // setupProgressBar();
@@ -66,12 +69,45 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
             kidImageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedKid.getMonsterImageResourceName() , "drawable" ,
                     getApplicationContext().getPackageName()) );
             kidNameTextView.setText(selectedKid.getKidName());
+            getKidPlanz();
 
         }
 
-        configActionButton();
-        firebaseHelper = new FirebaseHelper();
-        setupRecyclerView();
+
+    }
+
+    private void getKidPlanz() {
+        firebaseHelper.getKidPlanz(selectedKid).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<ArrayList<KidPlan>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<KidPlan> kidPlanz) {
+                        Log.d(TAG, "onNext:  " + kidPlanz.size());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecylerView(kidPlanz);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
     }
 
     private void setupRecyclerView() {
@@ -185,6 +221,12 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         Log.i(TAG, "onClick UserFireStore : " + kidPlan.getKidFirestoreId());
         Log.i(TAG, "onClick KidFireStore : " + kidPlan.getFirestoreId());
         mAdapter.add(kidPlan, 0);
+        recyclerView.scrollToPosition(0);
+        dismissProgressBar();
+    }
+
+    private void updateRecylerView(ArrayList<KidPlan> kidPlanz) {
+        mAdapter.updateData(kidPlanz);
         recyclerView.scrollToPosition(0);
         dismissProgressBar();
     }

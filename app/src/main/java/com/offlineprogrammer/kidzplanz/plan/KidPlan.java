@@ -30,6 +30,10 @@ public class KidPlan implements Parcelable {
         kidFirestoreId = in.readString();
     }
 
+    public KidPlan(){
+
+    }
+
     public static final Creator<KidPlan> CREATOR = new Creator<KidPlan>() {
         @Override
         public KidPlan createFromParcel(Parcel in) {

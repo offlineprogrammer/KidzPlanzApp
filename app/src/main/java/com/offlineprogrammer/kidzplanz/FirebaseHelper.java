@@ -202,4 +202,33 @@ public class FirebaseHelper {
         });
 
     }
+
+    public Observable<ArrayList<KidPlan>> getKidPlanz(Kid selectedKid) {
+
+        ArrayList<KidPlan> kidPlanzList = new ArrayList<>();
+        return Observable.create((ObservableEmitter<ArrayList<KidPlan>> emitter) -> {
+
+            DocumentReference selectedKidRef = m_db.collection("users").document(selectedKid.getUserFirestoreId()).collection("kidz").document(selectedKid.getFirestoreId());
+            selectedKidRef.collection("planz").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (document.exists()) {
+                                        Log.d("Got Task Data", document.getId() + " => " + document.getData());
+                                        KidPlan kidPlan = document.toObject(KidPlan.class);
+                                        kidPlanzList.add(kidPlan);
+                                    }
+                                }
+                                emitter.onNext(kidPlanzList);
+                            } else {
+                                Log.d("Got Date", "Error getting documents: ", task.getException());
+                                emitter.onError(task.getException());
+                            }
+                        }
+                    });
+        });
+
+    }
 }
