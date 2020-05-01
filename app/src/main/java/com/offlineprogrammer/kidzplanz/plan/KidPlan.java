@@ -3,7 +3,11 @@ package com.offlineprogrammer.kidzplanz.plan;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KidPlan implements Parcelable {
     private String planName;
@@ -49,6 +53,17 @@ public class KidPlan implements Parcelable {
         dest.writeString(planImageResourceName);
         dest.writeString(firestoreId);
         dest.writeString(kidFirestoreId);
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("planName", this.planName);
+        result.put("planImageResourceName", this.planImageResourceName);
+        result.put("createdDate", this.createdDate);
+        result.put("firestoreId", this.firestoreId);
+        result.put("kidFirestoreId", this.kidFirestoreId);
+        return result;
     }
 
     public String getPlanName() {

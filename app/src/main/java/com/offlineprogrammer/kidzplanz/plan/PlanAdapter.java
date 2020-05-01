@@ -66,6 +66,6 @@ public class PlanAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(final int position) {
-        return R.layout.kid_itemview;
+        return R.layout.plan_itemview;
     }
 }

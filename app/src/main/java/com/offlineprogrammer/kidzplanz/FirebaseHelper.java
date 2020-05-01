@@ -19,12 +19,14 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.offlineprogrammer.kidzplanz.kid.Kid;
+import com.offlineprogrammer.kidzplanz.plan.KidPlan;
 import com.offlineprogrammer.kidzplanz.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
@@ -163,10 +165,39 @@ public class FirebaseHelper {
                                 emitter.onNext(kidzList);
                             } else {
                                 Log.d("Got Date", "Error getting documents: ", task.getException());
+                                emitter.onError(task.getException());
                             }
                         }
                     });
 
+
+        });
+
+    }
+
+    public Observable<KidPlan>  saveKidPlan(KidPlan newPlan, Kid selectedKid) {
+
+        return Observable.create((ObservableEmitter<KidPlan> emitter) -> {
+            DocumentReference newPlanRef = m_db.collection("users").document(selectedKid.getUserFirestoreId()).collection("kidz").document(selectedKid.getFirestoreId()).collection("planz").document();
+            newPlan.setFirestoreId(newPlanRef.getId());
+            newPlan.setKidFirestoreId(selectedKid.getFirestoreId());
+            Map<String, Object> planValues = newPlan.toMap();
+
+            newPlanRef.set(planValues, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("Add Kid", "DocumentSnapshot successfully written!");
+                            emitter.onNext(newPlan);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Add Kid", "Error writing document", e);
+                            emitter.onError(e);
+                        }
+                    });
 
         });
 

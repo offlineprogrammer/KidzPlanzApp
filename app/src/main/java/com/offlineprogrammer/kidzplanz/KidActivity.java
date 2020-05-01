@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
@@ -111,6 +116,8 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
                     KidPlan newPlan = new KidPlan(planName,
                             "bekind",
                             currentTime);
+                    setupProgressBar();
+                    saveKidPlan(newPlan);
                     builder.dismiss();
                }
             }
@@ -136,6 +143,51 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
     }
 
+    private void saveKidPlan(KidPlan newPlan) {
+        firebaseHelper.saveKidPlan(newPlan, selectedKid).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<KidPlan>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(KidPlan kidPlan) {
+                        Log.d(TAG, "onNext: " + kidPlan.getFirestoreId());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecylerView(kidPlan);
+                            }
+                        });
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
+    }
+
+    private void updateRecylerView(KidPlan kidPlan) {
+        Log.i(TAG, "onClick UserFireStore : " + kidPlan.getKidFirestoreId());
+        Log.i(TAG, "onClick KidFireStore : " + kidPlan.getFirestoreId());
+        mAdapter.add(kidPlan, 0);
+        recyclerView.scrollToPosition(0);
+        dismissProgressBar();
+    }
+
     private boolean isTaskNameValid(String taskName) {
         return true;
     }
@@ -144,4 +196,58 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
     public void onPlanClick(int position) {
 
     }
+
+    private void setupProgressBar() {
+        dismissProgressBar();
+        progressBar = new ProgressDialog(this);
+        progressBar.setMessage("Loading data ...");
+        progressBar.show();
+    }
+
+    private void dismissProgressBar() {
+        dismissWithCheck(progressBar);
+    }
+
+    public void dismissWithCheck(ProgressDialog dialog) {
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+
+                //get the Context object that was used to great the dialog
+                Context context = ((ContextWrapper) dialog.getContext()).getBaseContext();
+
+                // if the Context used here was an activity AND it hasn't been finished or destroyed
+                // then dismiss it
+                if (context instanceof Activity) {
+
+                    // Api >=17
+                    if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        dismissWithTryCatch(dialog);
+                    }
+                } else
+                    // if the Context used wasn't an Activity, then dismiss it too
+                    dismissWithTryCatch(dialog);
+            }
+            dialog = null;
+        }
+    }
+
+    public void dismissWithTryCatch(ProgressDialog dialog) {
+        try {
+            dialog.dismiss();
+        } catch (final IllegalArgumentException e) {
+            // Do nothing.
+        } catch (final Exception e) {
+            // Do nothing.
+        } finally {
+            dialog = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissWithCheck(progressBar);
+        super.onDestroy();
+        disposable.dispose();
+    }
+
 }
