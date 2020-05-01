@@ -33,9 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -148,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
                     String monsterImageResourceName = getResources().getResourceEntryName(monsterImage);
 
                     Kid newKid = new Kid(kidName,
-                            monsterImage,
                             monsterImageResourceName,
                             currentTime);
                     setupProgressBar();

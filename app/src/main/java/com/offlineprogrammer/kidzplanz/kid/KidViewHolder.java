@@ -1,5 +1,6 @@
 package com.offlineprogrammer.kidzplanz.kid;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,8 +14,10 @@ public class KidViewHolder extends RecyclerView.ViewHolder implements View.OnCli
     private TextView kidNameTextView;
     private ImageView kidMonsterImageView;
     OnKidListener onKidListener;
+    private Context mContext;
     public KidViewHolder(@NonNull View itemView, OnKidListener onKidListener) {
         super(itemView);
+        mContext = itemView.getContext();
         kidNameTextView = itemView.findViewById(R.id.kid_name);
         kidMonsterImageView = itemView.findViewById(R.id.kid_monster_name);
         this.onKidListener = onKidListener;
@@ -23,7 +26,8 @@ public class KidViewHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     public void bindData(final Kid viewModel) {
         kidNameTextView.setText(viewModel.getKidName());
-        kidMonsterImageView.setImageResource(viewModel.getMonsterImage());
+        kidMonsterImageView.setImageResource( mContext.getResources().getIdentifier(viewModel.getMonsterImageResourceName() , "drawable" ,
+                mContext.getPackageName()) );
     }
 
     @Override

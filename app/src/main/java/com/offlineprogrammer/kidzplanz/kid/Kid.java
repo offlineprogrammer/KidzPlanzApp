@@ -12,16 +12,14 @@ import com.google.firebase.database.Exclude;
 
 public class Kid implements Parcelable {
     private String kidName;
-    private int monsterImage;
     private String monsterImageResourceName;
     private Date createdDate;
     private String firestoreId;
     private String userFirestoreId;
 
-    public Kid(String kidName, int monsterImage, String monsterImageResourceName, Date createdDate) {
+    public Kid(String kidName, String monsterImageResourceName, Date createdDate) {
 
         this.kidName = kidName;
-        this.monsterImage = monsterImage;
         this.monsterImageResourceName = monsterImageResourceName;
         this.createdDate = createdDate;
     }
@@ -33,7 +31,6 @@ public class Kid implements Parcelable {
 
     protected Kid(Parcel in) {
         kidName = in.readString();
-        monsterImage = in.readInt();
         monsterImageResourceName = in.readString();
         firestoreId = in.readString();
         userFirestoreId = in.readString();
@@ -59,7 +56,6 @@ public class Kid implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(kidName);
-        dest.writeInt(monsterImage);
         dest.writeString(monsterImageResourceName);
         dest.writeString(firestoreId);
         dest.writeString(userFirestoreId);
@@ -74,19 +70,11 @@ public class Kid implements Parcelable {
         this.kidName = kidName;
     }
 
-    public int getMonsterImage() {
-        return monsterImage;
-    }
-
-    public void setMonsterImage(int monsterImage) {
-        this.monsterImage = monsterImage;
-    }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("kidName", this.kidName);
-        result.put("monsterImage", this.monsterImage);
         result.put("monsterImageResourceName", this.monsterImageResourceName);
         result.put("createdDate", this.createdDate);
         result.put("firestoreId", this.firestoreId);
@@ -100,7 +88,6 @@ public class Kid implements Parcelable {
                 "firestoreId='" + firestoreId + '\'' +
                 ", userFirestoreId='" + userFirestoreId + '\'' +
                 ", kidName='" + kidName + '\'' +
-                ", monsterImage='" + monsterImage + '\'' +
                 '}';
     }
 

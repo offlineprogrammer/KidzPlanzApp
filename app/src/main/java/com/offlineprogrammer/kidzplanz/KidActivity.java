@@ -63,7 +63,8 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
             // setupProgressBar();
             Bundle data = getIntent().getExtras();
             selectedKid = data.getParcelable("selected_kid");
-            kidImageView.setImageResource(selectedKid.getMonsterImage());
+            kidImageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedKid.getMonsterImageResourceName() , "drawable" ,
+                    getApplicationContext().getPackageName()) );
             kidNameTextView.setText(selectedKid.getKidName());
 
         }
@@ -247,7 +248,9 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
     protected void onDestroy() {
         dismissWithCheck(progressBar);
         super.onDestroy();
-        disposable.dispose();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
 }
