@@ -9,13 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KidzTokenz.Autumn">
+        <activity android:name=".PlanActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".KidActivity" />
         <activity
             android:name=".KidActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.Splash"></activity>
+            android:theme="@style/AppTheme.Splash" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.Splash">

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -237,6 +238,13 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
     @Override
     public void onPlanClick(int position) {
+
+        planzList = mAdapter.getAllItems();
+        Log.i(TAG, "Clicked " + position);
+        Intent intent = new Intent(this, PlanActivity.class);
+        Log.i(TAG, "onKidClick: " + planzList.get(position).toString());
+        intent.putExtra("selected_plan",planzList.get(position));
+        startActivity(intent);
 
     }
 
