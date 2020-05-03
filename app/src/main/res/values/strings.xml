@@ -7,4 +7,5 @@
     <string name="kpz_add_planz">Add Planz</string>
     <string name="kpz_hint_planname">Please enter a name (min 2 chars)</string>
     <string name="kpz_choose_reward">Choose your reward</string>
+    <string name="kpz_hint_planitemname">Please enter a name (min 2 chars)</string>
 </resources>
