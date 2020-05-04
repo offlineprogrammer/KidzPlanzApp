@@ -210,7 +210,9 @@ public class FirebaseHelper {
         return Observable.create((ObservableEmitter<ArrayList<KidPlan>> emitter) -> {
 
             DocumentReference selectedKidRef = m_db.collection("users").document(selectedKid.getUserFirestoreId()).collection("kidz").document(selectedKid.getFirestoreId());
-            selectedKidRef.collection("planz").get()
+            selectedKidRef.collection("planz")
+                    .orderBy("createdDate", Query.Direction.DESCENDING)
+                    .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -272,7 +274,9 @@ public class FirebaseHelper {
             DocumentReference selectedPlanRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
                     .collection("kidz").document(selectedKid.getFirestoreId())
                     .collection("planz").document(selectedPlan.getFirestoreId());
-            selectedPlanRef.collection("itemz").get()
+            selectedPlanRef.collection("itemz")
+                    .orderBy("createdDate", Query.Direction.DESCENDING)
+                    .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
