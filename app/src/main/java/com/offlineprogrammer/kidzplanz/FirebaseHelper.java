@@ -20,6 +20,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.offlineprogrammer.kidzplanz.kid.Kid;
 import com.offlineprogrammer.kidzplanz.plan.KidPlan;
+import com.offlineprogrammer.kidzplanz.planitem.PlanItem;
 import com.offlineprogrammer.kidzplanz.user.User;
 
 import java.util.ArrayList;
@@ -228,6 +229,37 @@ public class FirebaseHelper {
                             }
                         }
                     });
+        });
+
+    }
+
+    public Observable<PlanItem> savePlanItem(PlanItem newItem, KidPlan selectedPlan, Kid selectedKid) {
+
+        return Observable.create((ObservableEmitter<PlanItem> emitter) -> {
+            DocumentReference newPlanItemRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
+                    .collection("kidz").document(selectedKid.getFirestoreId())
+                    .collection("planz").document(selectedPlan.getFirestoreId())
+                    .collection("itemz").document();
+            newItem.setFirestoreId(newPlanItemRef.getId());
+            newItem.setPlanFirestoreId(selectedPlan.getFirestoreId());
+            Map<String, Object> planItemValues = newItem.toMap();
+
+            newPlanItemRef.set(planItemValues, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("Add Kid", "DocumentSnapshot successfully written!");
+                            emitter.onNext(newItem);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Add Kid", "Error writing document", e);
+                            emitter.onError(e);
+                        }
+                    });
+
         });
 
     }

@@ -240,12 +240,12 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
     public void onPlanClick(int position) {
 
         planzList = mAdapter.getAllItems();
-        Log.i(TAG, "Clicked " + position);
         Intent intent = new Intent(this, PlanActivity.class);
-        Log.i(TAG, "onKidClick: " + planzList.get(position).toString());
-        intent.putExtra("selected_plan",planzList.get(position));
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("selected_kid",  selectedKid);
+        bundle.putParcelable("selected_plan",planzList.get(position));
+        intent.putExtras(bundle);
         startActivity(intent);
-
     }
 
     private void setupProgressBar() {
