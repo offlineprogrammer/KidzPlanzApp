@@ -2,12 +2,13 @@ package com.offlineprogrammer.kidzplanz;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,8 +22,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.offlineprogrammer.kidzplanz.kid.Kid;
 import com.offlineprogrammer.kidzplanz.plan.KidPlan;
+import com.offlineprogrammer.kidzplanz.planitem.OnPlanItemListener;
 import com.offlineprogrammer.kidzplanz.planitem.PlanItem;
+import com.offlineprogrammer.kidzplanz.planitem.PlanItemAdapter;
+import com.offlineprogrammer.kidzplanz.planitem.PlanItemGridItemDecoration;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,7 +35,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class PlanActivity extends AppCompatActivity {
+public class PlanActivity extends AppCompatActivity implements OnPlanItemListener {
     private static final String TAG = "PlanActivity";
 
     ImageView planImageView;
@@ -40,6 +45,9 @@ public class PlanActivity extends AppCompatActivity {
     private Disposable disposable;
     ProgressDialog progressBar;
     Kid selectedKid;
+    private RecyclerView recyclerView;
+    private PlanItemAdapter mAdapter;
+    private ArrayList<PlanItem> planItemzList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class PlanActivity extends AppCompatActivity {
         planNameTextView = findViewById(R.id.plannameTextView);
         configActionButton();
         firebaseHelper = new FirebaseHelper();
+        setupRecyclerView();
 
 
         if (getIntent().getExtras() != null) {
@@ -59,6 +68,20 @@ public class PlanActivity extends AppCompatActivity {
                     getApplicationContext().getPackageName()) );
             planNameTextView.setText(selectedPlan.getPlanName());
         }
+    }
+
+    private void setupRecyclerView() {
+        mAdapter = new PlanItemAdapter(planItemzList,this);
+        recyclerView = findViewById(R.id.planitems_recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        int largePadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing);
+        int smallPadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing_small);
+        recyclerView.addItemDecoration(new PlanItemGridItemDecoration(largePadding, smallPadding));
+
     }
 
     private void configActionButton() {
@@ -132,7 +155,7 @@ public class PlanActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                              //  updateRecylerView(planItem);
+                                updateRecylerView(planItem);
                             }
                         });
 
@@ -152,7 +175,18 @@ public class PlanActivity extends AppCompatActivity {
                 });
     }
 
+    private void updateRecylerView(PlanItem planItem) {
+        mAdapter.add(planItem, 0);
+        recyclerView.scrollToPosition(0);
+       // dismissProgressBar();
+    }
+
     private boolean isPlanItemNameValid(String planItemName) {
         return true;
+    }
+
+    @Override
+    public void onPlanItemClick(int position) {
+
     }
 }
