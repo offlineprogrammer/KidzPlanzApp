@@ -1,5 +1,5 @@
 package com.offlineprogrammer.kidzplanz.planitem;
 
 public interface OnPlanItemListener {
-    void onPlanItemClick(int position);
+    void onPlanItemCheckedChanged(int position, boolean isChecked);
 }

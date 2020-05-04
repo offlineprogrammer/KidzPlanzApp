@@ -228,8 +228,39 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         return true;
     }
 
+
+
     @Override
-    public void onPlanItemClick(int position) {
+    public void onPlanItemCheckedChanged(int position, boolean isChecked) {
+
+        planItemzList = mAdapter.getAllItems();
+        PlanItem selectedPlanItem = planItemzList.get(position);
+        selectedPlanItem.setbCompleted(isChecked);
+        firebaseHelper.updatePlanItem(selectedPlanItem,selectedPlan,selectedKid).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<PlanItem>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(PlanItem planItem) {
+                        Log.d(TAG, "onNext: " + planItem.getFirestoreId());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
 
     }
 }

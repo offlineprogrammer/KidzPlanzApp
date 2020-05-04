@@ -293,4 +293,30 @@ public class FirebaseHelper {
                     });
         });
     }
+
+    public Observable<PlanItem> updatePlanItem(PlanItem selectedPlanItem, KidPlan selectedPlan, Kid selectedKid) {
+        return Observable.create((ObservableEmitter<PlanItem> emitter) -> {
+            DocumentReference selectedPlanItemRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
+                    .collection("kidz").document(selectedKid.getFirestoreId())
+                    .collection("planz").document(selectedPlan.getFirestoreId())
+                    .collection("itemz").document(selectedPlanItem.getFirestoreId());
+            selectedPlanItemRef.update("bCompleted", selectedPlanItem.getbCompleted())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i(TAG, "DocumentSnapshot successfully updated!");
+                            emitter.onNext(selectedPlanItem);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i(TAG, "Error updating document", e);
+                            emitter.onError(e);
+                        }
+                    });
+
+
+        });
+    }
 }
