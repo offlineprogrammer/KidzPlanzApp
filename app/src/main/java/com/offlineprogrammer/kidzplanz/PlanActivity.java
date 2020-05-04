@@ -49,6 +49,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
     private PlanItemAdapter mAdapter;
     private ArrayList<PlanItem> planItemzList = new ArrayList<>();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,42 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
             planImageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedPlan.getPlanImageResourceName() , "drawable" ,
                     getApplicationContext().getPackageName()) );
             planNameTextView.setText(selectedPlan.getPlanName());
+            getPlanItemz();
         }
+    }
+
+    private void getPlanItemz() {
+        firebaseHelper.getPlanItemz(selectedPlan, selectedKid).observeOn(Schedulers.io())
+                //.observeOn(Schedulers.m)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<ArrayList<PlanItem>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<PlanItem> planItemz) {
+                        Log.d(TAG, "onNext:  " + planItemz.size());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateRecylerView(planItemz);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
     }
 
     private void setupRecyclerView() {
@@ -179,6 +216,12 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         mAdapter.add(planItem, 0);
         recyclerView.scrollToPosition(0);
        // dismissProgressBar();
+    }
+
+    private void updateRecylerView(ArrayList<PlanItem> planItemz) {
+        mAdapter.updateData(planItemz);
+        recyclerView.scrollToPosition(0);
+        //dismissProgressBar();
     }
 
     private boolean isPlanItemNameValid(String planItemName) {

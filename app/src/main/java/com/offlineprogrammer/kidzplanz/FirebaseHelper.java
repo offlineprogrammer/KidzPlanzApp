@@ -263,4 +263,34 @@ public class FirebaseHelper {
         });
 
     }
+
+    public Observable<ArrayList<PlanItem>> getPlanItemz(KidPlan selectedPlan, Kid selectedKid) {
+        ArrayList<PlanItem> planItemzList = new ArrayList<>();
+        return Observable.create((ObservableEmitter<ArrayList<PlanItem>> emitter) -> {
+
+
+            DocumentReference selectedPlanRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
+                    .collection("kidz").document(selectedKid.getFirestoreId())
+                    .collection("planz").document(selectedPlan.getFirestoreId());
+            selectedPlanRef.collection("itemz").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (document.exists()) {
+                                        Log.d("Got Task Data", document.getId() + " => " + document.getData());
+                                        PlanItem planItem = document.toObject(PlanItem.class);
+                                        planItemzList.add(planItem);
+                                    }
+                                }
+                                emitter.onNext(planItemzList);
+                            } else {
+                                Log.d("Got Date", "Error getting documents: ", task.getException());
+                                emitter.onError(task.getException());
+                            }
+                        }
+                    });
+        });
+    }
 }

@@ -19,6 +19,10 @@ public class PlanItem {
         this.bCompleted = bCompleted;
     }
 
+    public PlanItem(){
+
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
