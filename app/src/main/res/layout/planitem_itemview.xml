@@ -19,7 +19,9 @@
         android:background="@drawable/selector_planitem"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        android:textStyle="italic|bold"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

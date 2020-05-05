@@ -1,6 +1,7 @@
 package com.offlineprogrammer.kidzplanz.planitem;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -27,6 +28,12 @@ public class PlanItemViewHolder extends RecyclerView.ViewHolder implements Switc
     public void bindData(final PlanItem viewModel) {
         planItemSwitch.setText(viewModel.getPlanItemName());
         planItemSwitch.setChecked(viewModel.getbCompleted());
+        if (viewModel.getbCompleted()) {
+            planItemSwitch.setPaintFlags(planItemSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            planItemSwitch.setPaintFlags(planItemSwitch.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+
     }
 
 
@@ -35,6 +42,11 @@ public class PlanItemViewHolder extends RecyclerView.ViewHolder implements Switc
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.isPressed()) {
             onPlanItemListener.onPlanItemCheckedChanged(getAdapterPosition(), isChecked);
+            if (isChecked) {
+                planItemSwitch.setPaintFlags(planItemSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                planItemSwitch.setPaintFlags(planItemSwitch.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            }
         }
     }
 }
