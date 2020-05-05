@@ -16,6 +16,8 @@
         android:id="@+id/planItem_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:background="@drawable/selector_planitem"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
