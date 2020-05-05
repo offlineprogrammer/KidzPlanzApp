@@ -115,8 +115,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        int largePadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing);
-        int smallPadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing_small);
+        int largePadding = getResources().getDimensionPixelSize(R.dimen.kpz_planItemz_grid_spacing);
+        int smallPadding = getResources().getDimensionPixelSize(R.dimen.kpz_planItemz_grid_spacing_small);
         recyclerView.addItemDecoration(new PlanItemGridItemDecoration(largePadding, smallPadding));
 
     }
