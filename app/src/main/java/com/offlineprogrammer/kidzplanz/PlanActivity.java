@@ -2,12 +2,14 @@ package com.offlineprogrammer.kidzplanz;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -49,6 +51,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
     private PlanItemAdapter mAdapter;
     private ArrayList<PlanItem> planItemzList = new ArrayList<>();
 
+    CardView planRewardCard;
+
 
 
     @Override
@@ -58,6 +62,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
 
         planImageView = findViewById(R.id.planImage);
         planNameTextView = findViewById(R.id.plannameTextView);
+        planRewardCard = findViewById(R.id.rewardCard);
+
         configActionButton();
         firebaseHelper = new FirebaseHelper();
         setupRecyclerView();
@@ -71,6 +77,14 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
             planNameTextView.setText(selectedPlan.getPlanName());
             getPlanItemz();
         }
+
+        planRewardCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mIntent = new Intent(PlanActivity.this, RewardActivity.class);
+                startActivityForResult(mIntent, 3);
+            }
+        });
     }
 
     private void getPlanItemz() {
