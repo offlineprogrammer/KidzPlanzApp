@@ -4,16 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.offlineprogrammer.kidzplanz.planreward.PlanReward;
 import com.offlineprogrammer.kidzplanz.planreward.PlanRewardAdapter;
 import com.offlineprogrammer.kidzplanz.planreward.PlanRewardGridItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class RewardActivity extends AppCompatActivity {
+
+    private static final String TAG = "RewardActivity";
 
     RecyclerView mRecyclerView;
     List<PlanReward> mPlanRewardList;
@@ -32,70 +38,48 @@ public class RewardActivity extends AppCompatActivity {
         int smallPadding = getResources().getDimensionPixelSize(R.dimen.kpz_kidz_grid_spacing_small);
         mRecyclerView.addItemDecoration(new PlanRewardGridItemDecoration(largePadding, smallPadding));
 
-        mPlanRewardList = new ArrayList<>();
 
-        mPlanReward = new PlanReward("Book",  "book");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Candy",  "candy");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Game",  "game");
-        mPlanRewardList.add(mPlanReward);
-
-       /*   mPlanReward = new PlanReward("Good Job!",  "goodjob");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("High Five!",  "highfive");
-        mPlanRewardList.add(mPlanReward);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                prepareData();
+            }
+        });
 
 
-        mPlanReward = new PlanReward("Hug",  "hug");
-        mPlanRewardList.add(mPlanReward);
 
-        mPlanReward = new PlanReward("Ice Cream",  "icecream");
-        mPlanRewardList.add(mPlanReward);
+    }
 
-        mPlanReward = new PlanReward("music",  "Movie");
-        mPlanRewardList.add(mPlanReward);
+    private void prepareData() {
+        mPlanRewardList = new ArrayList<>(7);
 
-        mPlanReward = new PlanReward("Music",  "music");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Park",  "park");
-        mPlanRewardList.add(mPlanReward);
-
-
-        mPlanReward = new PlanReward("Pizza",  "pizza");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Playdate",  "playdate");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Playtime",  "playtime");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Pocket Money",  "pocketmony");
-        mPlanRewardList.add(mPlanReward);
-
-        mPlanReward = new PlanReward("Winner",  "proud");
-        mPlanRewardList.add(mPlanReward);
+        Collections.addAll(mPlanRewardList, new PlanReward("Book",  "book"),
+                new PlanReward("Candy",  "candy"),
+                new PlanReward("Game",  "game"),
+                new PlanReward("Good Job!",  "goodjob"),
+                new PlanReward("High Five!",  "highfive"),
+                new PlanReward("Hug",  "hug"),
+                new PlanReward("Ice Cream",  "icecream"),
+                new PlanReward("music",  "Movie"),
+                new PlanReward("Music",  "music"),
+                new PlanReward("Park",  "park"),
+                new PlanReward("Pizza",  "pizza"),
+                new PlanReward("Playdate",  "playdate"),
+                new PlanReward("Playtime",  "playtime"),
+                new PlanReward("Pocket Money",  "pocketmony"),
+                new PlanReward("Winner",  "proud"),
+                new PlanReward("Resturant",  "resturant"),
+                new PlanReward("Snack",  "snack"),
+                new PlanReward("Swimming",  "swiming"),
+                new PlanReward("Phone/Tablet",  "tablet"),
+                new PlanReward("toy",  "toy"));
 
 
-        mPlanReward = new PlanReward("Resturant",  "resturant");
-        mPlanRewardList.add(mPlanReward);
+        Log.i(TAG, "prepareData: Size " + mPlanRewardList.size());
 
-        mPlanReward = new PlanReward("Snack",  "snack");
-        mPlanRewardList.add(mPlanReward);
 
-        mPlanReward = new PlanReward("Swimming",  "swiming");
-        mPlanRewardList.add(mPlanReward);
 
-        mPlanReward = new PlanReward("Phone/Tablet",  "tablet");
-        mPlanRewardList.add(mPlanReward);
 
-        mPlanReward = new PlanReward("toy",  "toy");
-        mPlanRewardList.add(mPlanReward);*/
 
 
 
