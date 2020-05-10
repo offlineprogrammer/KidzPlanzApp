@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
     private static final String TAG = "PlanActivity";
 
     ImageView planImageView;
+    ImageView rewardimageView;
     TextView planNameTextView;
     KidPlan selectedPlan;
     FirebaseHelper firebaseHelper;
@@ -63,6 +65,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         planImageView = findViewById(R.id.planImage);
         planNameTextView = findViewById(R.id.plannameTextView);
         planRewardCard = findViewById(R.id.rewardCard);
+        rewardimageView = findViewById(R.id.rewardimageView);
 
         configActionButton();
         firebaseHelper = new FirebaseHelper();
@@ -85,6 +88,28 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
                 startActivityForResult(mIntent, 3);
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3) {
+            if (resultCode == Activity.RESULT_OK) {
+
+
+                String rewardImageResourceName =  data.getStringExtra("Image");
+                String rewardNAame =  data.getStringExtra("PlanReward");
+                rewardimageView.setImageResource( getApplicationContext().getResources().getIdentifier(rewardImageResourceName , "drawable" ,
+                        getApplicationContext().getPackageName()) );
+
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     private void getPlanItemz() {
