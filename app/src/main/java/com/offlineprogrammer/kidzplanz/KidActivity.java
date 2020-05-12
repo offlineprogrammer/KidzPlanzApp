@@ -302,4 +302,10 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         }
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
+    }
+
 }

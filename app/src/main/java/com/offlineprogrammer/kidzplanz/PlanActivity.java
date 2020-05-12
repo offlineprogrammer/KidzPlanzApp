@@ -78,6 +78,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
             planImageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedPlan.getPlanImageResourceName() , "drawable" ,
                     getApplicationContext().getPackageName()) );
             planNameTextView.setText(selectedPlan.getPlanName());
+            rewardimageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedPlan.getRewardImageResourceName() , "drawable" ,
+                    getApplicationContext().getPackageName()) );
             getPlanItemz();
         }
 
