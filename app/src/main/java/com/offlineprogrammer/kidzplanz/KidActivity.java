@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.offlineprogrammer.kidzplanz.kid.Kid;
 import com.offlineprogrammer.kidzplanz.plan.KidPlan;
@@ -153,7 +152,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
                     Date currentTime = Calendar.getInstance().getTime();
                     KidPlan newPlan = new KidPlan(planName,
                             "neutral",
-                            currentTime);
+                            currentTime, "proud");
                     setupProgressBar();
                     saveKidPlan(newPlan);
                     builder.dismiss();

@@ -103,6 +103,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
                 String rewardNAame =  data.getStringExtra("PlanReward");
                 rewardimageView.setImageResource( getApplicationContext().getResources().getIdentifier(rewardImageResourceName , "drawable" ,
                         getApplicationContext().getPackageName()) );
+                updateRewardImage(rewardImageResourceName);
 
 
             }
@@ -110,6 +111,18 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
                 //Write your code if there's no result
             }
         }
+    }
+
+    private void updateRewardImage(String rewardImageResourceName) {
+        selectedPlan.setRewardImageResourceName(rewardImageResourceName);
+        Log.i(TAG, "updateRewardImage: " + rewardImageResourceName);
+        firebaseHelper.updateRewardImage(selectedPlan, selectedKid)
+                .subscribe(() -> {
+                    Log.i(TAG, "updateRewardImage: completed");
+            // handle completion
+                }, throwable -> {
+            // handle error
+            });
     }
 
     private void getPlanItemz() {

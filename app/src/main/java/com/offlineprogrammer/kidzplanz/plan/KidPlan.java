@@ -15,12 +15,13 @@ public class KidPlan implements Parcelable {
     private Date createdDate;
     private String firestoreId;
     private String kidFirestoreId;
+    private String rewardImageResourceName;
 
-    public KidPlan(String planName, String planImageResourceName, Date createdDate) {
+    public KidPlan(String planName, String planImageResourceName, Date createdDate, String rewardImageResourceName) {
         this.planName = planName;
         this.planImageResourceName = planImageResourceName;
         this.createdDate = createdDate;
-
+        this.rewardImageResourceName = rewardImageResourceName;
     }
 
     protected KidPlan(Parcel in) {
@@ -28,6 +29,7 @@ public class KidPlan implements Parcelable {
         planImageResourceName = in.readString();
         firestoreId = in.readString();
         kidFirestoreId = in.readString();
+        rewardImageResourceName = in.readString();
     }
 
     public KidPlan(){
@@ -57,6 +59,7 @@ public class KidPlan implements Parcelable {
         dest.writeString(planImageResourceName);
         dest.writeString(firestoreId);
         dest.writeString(kidFirestoreId);
+        dest.writeString(rewardImageResourceName);
     }
 
     @Exclude
@@ -67,6 +70,7 @@ public class KidPlan implements Parcelable {
         result.put("createdDate", this.createdDate);
         result.put("firestoreId", this.firestoreId);
         result.put("kidFirestoreId", this.kidFirestoreId);
+        result.put("rewardImageResourceName", this.rewardImageResourceName);
         return result;
     }
 
@@ -84,6 +88,14 @@ public class KidPlan implements Parcelable {
 
     public void setPlanImageResourceName(String planImageResourceName) {
         this.planImageResourceName = planImageResourceName;
+    }
+
+    public String getRewardImageResourceName() {
+        return rewardImageResourceName;
+    }
+
+    public void setRewardImageResourceName(String rewardImageResourceName) {
+        this.rewardImageResourceName = rewardImageResourceName;
     }
 
     public Date getCreatedDate() {
