@@ -54,6 +54,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
     private ArrayList<PlanItem> planItemzList = new ArrayList<>();
 
     CardView planRewardCard;
+    CardView planCard;
 
 
 
@@ -66,6 +67,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         planNameTextView = findViewById(R.id.plannameTextView);
         planRewardCard = findViewById(R.id.rewardCard);
         rewardimageView = findViewById(R.id.rewardimageView);
+        planCard = findViewById(R.id.planCard);
 
         configActionButton();
         firebaseHelper = new FirebaseHelper();
@@ -88,6 +90,14 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
             public void onClick(View view) {
                 Intent mIntent = new Intent(PlanActivity.this, RewardActivity.class);
                 startActivityForResult(mIntent, 3);
+            }
+        });
+
+        planCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mIntent = new Intent(PlanActivity.this, MoodActivity.class);
+                startActivityForResult(mIntent, 4);
             }
         });
     }
@@ -113,6 +123,36 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
                 //Write your code if there's no result
             }
         }
+
+        if (requestCode == 4) {
+            if (resultCode == Activity.RESULT_OK) {
+
+
+                String moodImageResourceName =  data.getStringExtra("Image");
+                String rewardNAame =  data.getStringExtra("PlanMood");
+                planImageView.setImageResource( getApplicationContext().getResources().getIdentifier(moodImageResourceName , "drawable" ,
+                        getApplicationContext().getPackageName()) );
+                updateMoodImage(moodImageResourceName);
+
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+        
+    }
+
+    private void updateMoodImage(String moodImageResourceName) {
+        selectedPlan.setPlanImageResourceName(moodImageResourceName);
+        Log.i(TAG, "updateMoodImage: " + moodImageResourceName);
+        firebaseHelper.updateMoodImage(selectedPlan, selectedKid)
+                .subscribe(() -> {
+                    Log.i(TAG, "updateRewardImage: completed");
+                    // handle completion
+                }, throwable -> {
+                    // handle error
+                });
     }
 
     private void updateRewardImage(String rewardImageResourceName) {

@@ -348,4 +348,29 @@ public class FirebaseHelper {
 
         });
     }
+
+    public Completable updateMoodImage(KidPlan selectedPlan, Kid selectedKid) {
+        return Completable.create( emitter -> {
+            DocumentReference selectedPlanRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
+                    .collection("kidz").document(selectedKid.getFirestoreId())
+                    .collection("planz").document(selectedPlan.getFirestoreId());
+            selectedPlanRef.update("planImageResourceName", selectedPlan.getPlanImageResourceName())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i(TAG, "DocumentSnapshot successfully updated!");
+                            emitter.onComplete();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i(TAG, "Error updating document", e);
+                            emitter.onError(e);
+                        }
+                    });
+
+
+        });
+    }
 }
