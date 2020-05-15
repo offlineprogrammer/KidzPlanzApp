@@ -43,7 +43,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
 
     ImageView planImageView;
     ImageView rewardimageView;
-    TextView planNameTextView;
+
     KidPlan selectedPlan;
     FirebaseHelper firebaseHelper;
     private Disposable disposable;
@@ -64,7 +64,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         setContentView(R.layout.activity_plan);
 
         planImageView = findViewById(R.id.planImage);
-        planNameTextView = findViewById(R.id.plannameTextView);
+
         planRewardCard = findViewById(R.id.rewardCard);
         rewardimageView = findViewById(R.id.rewardimageView);
         planCard = findViewById(R.id.planCard);
@@ -79,7 +79,8 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
             selectedKid = getIntent().getExtras().getParcelable("selected_kid");
             planImageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedPlan.getPlanImageResourceName() , "drawable" ,
                     getApplicationContext().getPackageName()) );
-            planNameTextView.setText(selectedPlan.getPlanName());
+
+            setTitle(selectedPlan.getPlanName());
             rewardimageView.setImageResource( getApplicationContext().getResources().getIdentifier(selectedPlan.getRewardImageResourceName() , "drawable" ,
                     getApplicationContext().getPackageName()) );
             getPlanItemz();
