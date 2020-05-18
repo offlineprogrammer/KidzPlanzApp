@@ -422,4 +422,30 @@ public class FirebaseHelper {
 
         });
     }
+
+    public Completable deletePlanItem(Kid selectedKid, KidPlan selectedPlan, PlanItem selectedPlanItem) {
+        return Completable.create( emitter -> {
+            DocumentReference selectedPlanItemRef = m_db.collection("users").document(selectedKid.getUserFirestoreId())
+                    .collection("kidz").document(selectedKid.getFirestoreId())
+                    .collection("planz").document(selectedPlan.getFirestoreId())
+                    .collection("itemz").document(selectedPlanItem.getFirestoreId());
+            selectedPlanItemRef.delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.i(TAG, "DocumentSnapshot successfully deleted!");
+                            emitter.onComplete();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i(TAG, "Error updating document", e);
+                            emitter.onError(e);
+                        }
+                    });
+
+
+        });
+    }
 }

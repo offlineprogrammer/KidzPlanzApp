@@ -366,6 +366,20 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         return true;
     }
 
+    @Override
+    public void deletePlanItem(int position) {
+        planItemzList = mAdapter.getAllItems();
+        PlanItem selectedPlanItem = planItemzList.get(position);
+        mAdapter.delete(position);
+        planItemzList.remove(selectedPlanItem);
+        firebaseHelper.deletePlanItem(selectedKid,selectedPlan,selectedPlanItem)
+                .subscribe(() -> {
+                    Log.i(TAG, "updateRewardImage: completed");
+                   // updateRecylerView(planItemzList);
+                }, throwable -> {
+                    // handle error
+                });
+    }
 
 
     @Override
