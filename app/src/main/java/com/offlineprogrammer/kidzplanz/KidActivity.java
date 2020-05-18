@@ -277,7 +277,8 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
     }
 
     private boolean isTaskNameValid(String taskName) {
-        return true;
+
+        return taskName != null && taskName.length() >= 2;
     }
 
     @Override

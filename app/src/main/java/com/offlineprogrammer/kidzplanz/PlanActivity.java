@@ -363,7 +363,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
     }
 
     private boolean isPlanItemNameValid(String planItemName) {
-        return true;
+        return planItemName != null && planItemName.length() >= 2;
     }
 
     @Override
