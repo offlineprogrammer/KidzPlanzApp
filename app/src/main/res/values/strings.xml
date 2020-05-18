@@ -13,4 +13,7 @@
     <string name="deletekid_confirm_button">Yes!</string>
     <string name="ktz_delete_kid">Are you sure you want to delete?</string>
     <string name="deletekid_cancel_button">No</string>
+    <string name="deleteplan_cancel_button">No</string>
+    <string name="deleteplan_confirm_button">Yes!</string>
+    <string name="ktz_delete_plan">Are you sure you want to delete?</string>
 </resources>

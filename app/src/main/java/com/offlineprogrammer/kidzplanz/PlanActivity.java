@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
 
     CardView planRewardCard;
     CardView planCard;
+    ImageButton deleteImageButton;
 
 
 
@@ -68,6 +70,14 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
         planRewardCard = findViewById(R.id.rewardCard);
         rewardimageView = findViewById(R.id.rewardimageView);
         planCard = findViewById(R.id.planCard);
+        deleteImageButton = findViewById(R.id.delete_button);
+
+        deleteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeletePlanDialog(PlanActivity.this);
+            }
+        });
 
         configActionButton();
         firebaseHelper = new FirebaseHelper();
@@ -101,6 +111,39 @@ public class PlanActivity extends AppCompatActivity implements OnPlanItemListene
                 startActivityForResult(mIntent, 4);
             }
         });
+    }
+
+    private void showDeletePlanDialog(PlanActivity planActivity) {
+        final AlertDialog builder = new AlertDialog.Builder(planActivity).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.alert_dialog_delete_plan, null);
+        Button okBtn = dialogView.findViewById(R.id.deleteplan_confirm_button);
+        Button cancelBtn = dialogView.findViewById(R.id.deleteplan_cancel_button);
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                builder.dismiss();
+                deletePlan();
+                // mFirebaseAnalytics.logEvent("kid_deleted", null);
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        builder.setView(dialogView);
+        builder.show();
+    }
+
+    private void deletePlan() {
+        firebaseHelper.deletePlan(selectedKid,selectedPlan)
+                .subscribe(() -> {
+                    Log.i(TAG, "updateRewardImage: completed");
+                    finish();
+                }, throwable -> {
+                    // handle error
+                });
     }
 
 
