@@ -60,7 +60,7 @@ public class RewardActivity extends AppCompatActivity {
                 new PlanReward("High Five!",  "highfive"),
                 new PlanReward("Hug",  "hug"),
                 new PlanReward("Ice Cream",  "icecream"),
-                new PlanReward("music",  "Movie"),
+                new PlanReward("Movie",  "movie"),
                 new PlanReward("Music",  "music"),
                 new PlanReward("Park",  "park"),
                 new PlanReward("Pizza",  "pizza"),
