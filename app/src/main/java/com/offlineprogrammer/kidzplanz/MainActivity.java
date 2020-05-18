@@ -413,8 +413,12 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
         Log.i(TAG, "onKidClick: " + kidzList.get(position).toString());
         intent.putExtra("selected_kid",kidzList.get(position));
         startActivity(intent);
+    }
 
-
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
     }
 
 

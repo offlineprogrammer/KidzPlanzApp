@@ -10,4 +10,7 @@
     <string name="kpz_hint_planitemname">Please enter a name (min 2 chars)</string>
     <string name="kpz_add_planItemz">Tasks</string>
     <string name="kpz_set_plan_mood">How are feeling?</string>
+    <string name="deletekid_confirm_button">Yes!</string>
+    <string name="ktz_delete_kid">Are you sure you want to delete?</string>
+    <string name="deletekid_cancel_button">No</string>
 </resources>

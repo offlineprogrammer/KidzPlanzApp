@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
     private PlanAdapter mAdapter;
     private ArrayList<KidPlan> planzList = new ArrayList<>();
     ProgressDialog progressBar;
+    ImageButton deleteImageButton;
 
 
     @Override
@@ -58,9 +60,17 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
 
         kidImageView = findViewById(R.id.kidMonsterImage);
         kidNameTextView = findViewById(R.id.kidnameTextView);
+        deleteImageButton = findViewById(R.id.delete_button);
         configActionButton();
         firebaseHelper = new FirebaseHelper();
         setupRecyclerView();
+
+        deleteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteKidDialog(KidActivity.this);
+            }
+        });
 
         if (getIntent().hasExtra("selected_kid")) {
             // setupProgressBar();
@@ -74,6 +84,41 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         }
 
 
+    }
+
+    private void showDeleteKidDialog(Context c) {
+
+
+        final AlertDialog builder = new AlertDialog.Builder(c).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.alert_dialog_delete_kid, null);
+        Button okBtn = dialogView.findViewById(R.id.deletekid_confirm_button);
+        Button cancelBtn = dialogView.findViewById(R.id.deletekid_cancel_button);
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                builder.dismiss();
+                deleteKid();
+               // mFirebaseAnalytics.logEvent("kid_deleted", null);
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+        builder.setView(dialogView);
+        builder.show();
+    }
+
+    private void deleteKid() {
+        firebaseHelper.deleteKid(selectedKid)
+                .subscribe(() -> {
+                    Log.i(TAG, "updateRewardImage: completed");
+                    finish();
+                }, throwable -> {
+                    // handle error
+                });
     }
 
     private void getKidPlanz() {
