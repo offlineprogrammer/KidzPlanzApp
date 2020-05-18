@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
         setContentView(R.layout.activity_main);
         setupProgressBar();
 
-        firebaseHelper = new FirebaseHelper();
+        firebaseHelper = new FirebaseHelper(getApplicationContext());
         setupRecyclerView();
         getDeviceToken();
 
@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements OnKidListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                firebaseHelper.logEvent("kid_created");
                                 updateRecylerView(kid);
                             }
                         });

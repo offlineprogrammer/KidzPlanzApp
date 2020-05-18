@@ -62,7 +62,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         kidNameTextView = findViewById(R.id.kidnameTextView);
         deleteImageButton = findViewById(R.id.delete_button);
         configActionButton();
-        firebaseHelper = new FirebaseHelper();
+        firebaseHelper = new FirebaseHelper(getApplicationContext());
         setupRecyclerView();
 
         deleteImageButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +115,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         firebaseHelper.deleteKid(selectedKid)
                 .subscribe(() -> {
                     Log.i(TAG, "updateRewardImage: completed");
+                    firebaseHelper.logEvent("kid_deleted");
                     finish();
                 }, throwable -> {
                     // handle error
@@ -174,12 +175,12 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddTaskDialog(KidActivity.this);
+                showAddPlanDialog(KidActivity.this);
             }
         });
     }
 
-    private void showAddTaskDialog(Context c) {
+    private void showAddPlanDialog(Context c) {
         final AlertDialog builder = new AlertDialog.Builder(c).create();
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.alert_dialog_add_plan, null);
@@ -190,7 +191,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         okBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String planName = String.valueOf(planNameText.getEditText().getText());
-                if (!isTaskNameValid(planName)) {
+                if (!isPlanNameValid(planName)) {
                     planNameText.setError(getString(R.string.kid_error_name));
                 } else {
                     planNameText.setError(null);
@@ -208,7 +209,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 String kidName = String.valueOf(planNameText.getEditText().getText());
-                if (isTaskNameValid(kidName)) {
+                if (isPlanNameValid(kidName)) {
                     planNameText.setError(null); //Clear the error
                 }
                 return false;
@@ -242,6 +243,7 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                firebaseHelper.logEvent("plan_created");
                                 updateRecylerView(kidPlan);
                             }
                         });
@@ -276,9 +278,9 @@ public class KidActivity extends AppCompatActivity implements OnPlanListener {
         dismissProgressBar();
     }
 
-    private boolean isTaskNameValid(String taskName) {
+    private boolean isPlanNameValid(String planName) {
 
-        return taskName != null && taskName.length() >= 2;
+        return planName != null && planName.length() >= 2;
     }
 
     @Override

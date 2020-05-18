@@ -1,5 +1,6 @@
 package com.offlineprogrammer.kidzplanz;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,11 +37,15 @@ public class FirebaseHelper {
     private User m_User;
     FirebaseFirestore m_db;
     FirebaseAuth firebaseAuth;
+    FirebaseAnalytics mFirebaseAnalytics;
     private static final String TAG = "FirebaseHelper";
+    Context mContext;
 
-    public FirebaseHelper (){
+    public FirebaseHelper (Context c){
         m_db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        mContext = c;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
     }
 
     Observable<String> getDeviceToken() {
@@ -447,5 +453,9 @@ public class FirebaseHelper {
 
 
         });
+    }
+
+    public void logEvent(String event_name) {
+        mFirebaseAnalytics.logEvent(event_name, null);
     }
 }
