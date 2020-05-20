@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.offlineprogrammer.kidzplanz">
+    package="com.offlineprogrammer.KidzPlanz">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,26 +10,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KidzTokenz.Autumn">
-        <activity android:name=".MoodActivity"
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7065714443867225~3697740389"/>
+        <activity android:name="com.offlineprogrammer.KidzPlanz.MoodActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".PlanActivity" />
+            android:parentActivityName="com.offlineprogrammer.KidzPlanz.PlanActivity" />
         <activity
-            android:name=".RewardActivity"
+            android:name="com.offlineprogrammer.KidzPlanz.RewardActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".PlanActivity" />
+            android:parentActivityName="com.offlineprogrammer.KidzPlanz.PlanActivity" />
         <activity
-            android:name=".PlanActivity"
+            android:name="com.offlineprogrammer.KidzPlanz.PlanActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".KidActivity" />
+            android:parentActivityName="com.offlineprogrammer.KidzPlanz.KidActivity" />
         <activity
-            android:name=".KidActivity"
+            android:name="com.offlineprogrammer.KidzPlanz.KidActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.offlineprogrammer.KidzPlanz.MainActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.offlineprogrammer.KidzPlanz.LoginActivity"
             android:theme="@style/AppTheme.Splash" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.offlineprogrammer.KidzPlanz.SplashActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.offlineprogrammer.KidzPlanz.MainActivity" />
     </application>
 
 </manifest>

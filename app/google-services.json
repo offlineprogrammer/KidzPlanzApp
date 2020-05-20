@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:77442748465:android:4af06d89cb8c2649648510",
+        "android_client_info": {
+          "package_name": "com.offlineprogrammer.KidzPlanz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77442748465-60mfbf80rk4ipr0g6as2qfptu1o8f48p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.offlineprogrammer.KidzPlanz",
+            "certificate_hash": "49b09f5dcefe9bdc211315ed27e921c6e3896d9c"
+          }
+        },
+        {
+          "client_id": "77442748465-r6asu4v4r1iu9mouv9s4p0eegfaeokba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgeieSOMlrNsR4ul3TkSkwgHoytZr_vEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77442748465-r6asu4v4r1iu9mouv9s4p0eegfaeokba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:77442748465:android:cc16935a78b28467648510",
         "android_client_info": {
           "package_name": "com.offlineprogrammer.kidzplanz"

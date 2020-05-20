@@ -16,4 +16,12 @@
     <string name="deleteplan_cancel_button">No</string>
     <string name="deleteplan_confirm_button">Yes!</string>
     <string name="ktz_delete_plan">Are you sure you want to delete?</string>
+    <string name="plan_adMob_unit_id">ca-app-pub-7065714443867225/3470509679</string>
+    <string name="kid_adMob_unit_id">ca-app-pub-7065714443867225/9880005359</string>
+    <string name="main_adMob_unit_id">ca-app-pub-7065714443867225/8758495379</string>
+
+    <!--<string name="plan_adMob_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="kid_adMob_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="main_adMob_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    -->
 </resources>

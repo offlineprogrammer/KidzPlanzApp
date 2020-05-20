@@ -204,5 +204,15 @@
         android:src="@drawable/ic_add_white_24dp"
         android:backgroundTint="?attr/colorPrimary"/>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/plan_adMob_unit_id">
+    </com.google.android.gms.ads.AdView>
+
 </RelativeLayout>
 

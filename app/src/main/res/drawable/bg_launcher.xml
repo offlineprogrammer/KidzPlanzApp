@@ -9,7 +9,7 @@
     <item
         android:height="200dp"
         android:width="200dp"
-        android:drawable="@drawable/storeicon"
+        android:drawable="@drawable/kidzplanzicon"
         android:gravity="center">
     </item>
 
